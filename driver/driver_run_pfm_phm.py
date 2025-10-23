@@ -2,10 +2,11 @@ import sys
 import os
 import subprocess
 from datetime import datetime
+print('hello, starting code: ' + os.getcwd())
 sys.path.append('../sdpm_py_util')
 import init_funs_forecast as initfuns
 import util_functions as utilfuns
-sys.path.append('../driver')
+# sys.path.append('../driver')
 
 def driver_run_pfm_phm( input_py_full, pkl_fnm ):
     print('initializing model and making the info.pkl file.')

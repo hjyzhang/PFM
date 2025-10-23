@@ -20,7 +20,6 @@ def slurm_format_minutes(mins):
 
 
 def get_llbox(fname):
-    
    RMG = grdfuns.roms_grid_to_dict(fname)
    lt_mx = np.max(RMG['lat_rho'])
    lt_mn = np.min(RMG['lat_rho'])
@@ -39,7 +38,6 @@ def get_llbox(fname):
 
 # the function below MUST be called create_model_info_dict!!!
 def create_model_info_dict():
-
     run_type = 'hindcast'
 
     HOME = Path.home()
@@ -48,20 +46,28 @@ def create_model_info_dict():
     except KeyError:
         HOSTNAME = 'BLANK'
 
-    #run_type = 'forecast' # this is the switch to go from forecasting to hindcasting...
+    run_type = 'hindcast' # this is the switch to go from forecasting to hindcasting...
 
-    pfm_dir = '/scratch/PFM_Simulations/' # this stays fixed for Grids and executables
+    # pfm_dir = '/scratch/PFM_Simulations/' # this stays fixed for Grids and executables
+    #                                      # both forecasting and hindcasting use the same ones.
+    # if run_type == 'forecast':
+    #    pfm_root_dir = '/scratch/PFM_Simulations/'       
+    # else:
+    #    pfm_root_dir = '/scratch/PHM_Simulations/'   
+    # 
+    # 
+    pfm_dir = '/home/jiz053/github/sdroms/pathogen/' # this stays fixed for Grids and executables HARDCODED! FIX THIS!!!!!
                                          # both forecasting and hindcasting use the same ones.
     if run_type == 'forecast':
-       pfm_root_dir = '/scratch/PFM_Simulations/'       
+       pfm_root_dir = pfm_dir
     else:
-       pfm_root_dir = '/scratch/PHM_Simulations/'       
+       pfm_root_dir =pfm_dir +'PHM_Simulations/' 
    
     PFM = dict()
     if run_type == 'hindcast': # note hycom with tides starts on 2024-10-10 1200...
-        sim_start_time = '2024101900' # the simulation start time is in yyyymmddhh format
+        sim_start_time = '2024101100' # the simulation start time is in yyyymmddhh format
         # 2024101100 is the 1st day of hycom with tides hycom data.
-        sim_end_time   = '2024102100' # this is the very last time of the full simulation
+        sim_end_time   = '2024101300' # this is the very last time of the full simulation
         PFM['forecast_days'] = 1.0 # for now we do 1 day sub simulations
         # set the simulation end time. An integer number of days past the start time
         # We will loop over days until we get to this time.
@@ -74,7 +80,7 @@ def create_model_info_dict():
         # sim_time_1 is the inital time of the sub simulation
         # sim_time_2 is the last time of the sub simulation 
         # we loop through levels_to_run
-        PFM['levels_to_run'] = ['LV1','LV2','LV3','LV4']
+        PFM['levels_to_run'] = ['LV1','LV2','LV3']
         ocn_model = 'hycom_hind_wtide' # _wtide indicates using the new (>20241010) hycom
         PFM['atm_hind_dir'] = '/dataSIO/PHM_Simulations/raw_download/nam_grb2'
         atm_model = 'nam_analysis'
@@ -89,7 +95,7 @@ def create_model_info_dict():
     
     if ocn_model == 'hycom_new' or ocn_model == 'hycom_hind_wtide':
         add_tides=0 # the new version of hycom has tides, we don't need to add them
-
+    
     PFM['executable_dir'] = pfm_dir + 'executables/'   # we will not make copies of executables and 
     pfm_grid_dir =  pfm_dir +  'Grids'                 # grids. PHM will use the ones in pfm_dir
     lv1_root_dir =  pfm_root_dir +  'LV1_Forecast/'
@@ -154,7 +160,6 @@ def create_model_info_dict():
     PFM['lv2_grid_file_full'] = lv2_grid_file
     PFM['lv3_grid_file_full'] = lv3_grid_file
     PFM['lv4_grid_file_full'] = lv4_grid_file
-
 
     # atm options for run_type = 'forecast' are: nam_nest, gfs, gfs_1hr, ecmwf
     if run_type == 'forecast':
@@ -228,7 +233,7 @@ def create_model_info_dict():
     SS['L4','THETA_B']     = 3.0                     # bottom  stretching parameter
     SS['L4','TCLINE']      = 3.5                    # critical depth (m)
     SS['L4','hc']          = 3.5 
-
+    
     LLB = dict()
     LLB['L1'] = get_llbox(lv1_grid_file)
     LLB['L2'] = get_llbox(lv2_grid_file)
@@ -258,7 +263,7 @@ def create_model_info_dict():
     NN['L3','ntilej'] = 30    # 18 number of tiles in J-direction
     NN['L3','np'] = NN['L3','ntilei'] * NN['L3','ntilej'] # total number of processors
     NN['L3','nnodes'] = int( NN['L3','np'] / 36  )  # 3 number of nodes to be used.  not for .infile but for slurm!
-
+    
     NN['L4','Lm']  = 484     # Lm in input file
     NN['L4','Mm']  = 1139     # Mm in input file
     if lv4_model == 'ROMS':
@@ -317,9 +322,7 @@ def create_model_info_dict():
     OP['L3','rst_interval'] = 0.25  # how often in days, a restart file is made. 
     OP['L4','his_interval'] = 3600 # how often in sec outut is written to his.nc
     OP['L4','rst_interval'] = 0.25  # how often in days, a restart file is made. 
-
     PFM['run_type'] = run_type
-
     # first the environment
     PFM['lv1_run_dir']  = lv1_run_dir
     PFM['lv1_forc_dir'] = lv1_forc_dir
@@ -373,12 +376,12 @@ def create_model_info_dict():
     PFM['lv1_ini_file']            = 'LV1_OCEAN_IC.nc'
     PFM['lv1_bc_file']             = 'LV1_OCEAN_BC.nc'   
     
-    #PFM['lv1_executable']          = 'LV1_oceanM'
-    #PFM['lv2_executable']          = 'LV1_oceanM'
-    #PFM['lv3_executable']          = 'LV1_oceanM'
-    PFM['lv1_executable']          = 'LV3_romsM_INTEL'
-    PFM['lv2_executable']          = 'LV3_romsM_INTEL'
-    PFM['lv3_executable']          = 'LV3_romsM_INTEL'
+    PFM['lv1_executable']          = 'romsM_notides.bin'
+    PFM['lv2_executable']          = 'LV1_oceanM'
+    PFM['lv3_executable']          = 'LV1_oceanM'
+    # PFM['lv1_executable']          = 'LV3_romsM_INTEL'
+    # PFM['lv2_executable']          = 'LV3_romsM_INTEL'
+    # PFM['lv3_executable']          = 'LV3_romsM_INTEL'
 
     if add_tides==1:
         PFM['lv1_adding_tides'] = 'yes'

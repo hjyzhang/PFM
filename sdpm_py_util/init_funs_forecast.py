@@ -33,8 +33,8 @@ def evaluate_function_from_file(file_path, function_name, *args):
         
         # Get the function from the dictionary
         func = func_dict[function_name]
-        
         # Call the function with the provided arguments
+        # print(code_string) #This works 
         result = func(*args)
         return result
     
@@ -311,7 +311,6 @@ def get_swan_restart_file_name(pkl_fnm):
             fnm_swan = rst_files[isort[cnt]][0:-4]
             break
         cnt=cnt+1
-
     return fnm_swan
 
 def get_restart_file_and_index(lvl,pkl_fnm):
@@ -335,6 +334,7 @@ def get_restart_file_and_index(lvl,pkl_fnm):
     isort = np.argsort(dts)
     cnt = 0
     found = 0
+    print(rst_files)
     while cnt < len(isort):
         fname = rst_files[isort[cnt]]
         #print('looking in ' + fname + ' for the right restart time...')
