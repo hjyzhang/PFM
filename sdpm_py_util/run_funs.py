@@ -117,7 +117,8 @@ def  make_LV1_dotin_and_SLURM( pkl_fnm , mod_type ):
 
     lv1_infile_local  = 'LV1_forecast_run.in'
     lv1_logfile_local = 'LV1_forecast.log'
-    lv1_sbfile_local  = 'LV1_SLURM.sb'
+    # lv1_sbfile_local  = 'LV1_SLURM.sb'
+    lv1_sbfile_local  = 'LV1_BLANK.sh'
     D['lv1_infile_local']  = lv1_infile_local
     D['lv1_logfile_local'] = lv1_logfile_local
     D['lv1_tides_file']    = PFM['lv1_tides_file']
@@ -132,7 +133,8 @@ def  make_LV1_dotin_and_SLURM( pkl_fnm , mod_type ):
     if "INTEL" in D['lv1_executable']:
         blank_sbfile = dot_in_dir +'/' +  'LV1_SLURM_intel_BLANK.sb'
     else:        
-        blank_sbfile = dot_in_dir +'/' +  'LV1_SLURM_BLANK.sb'
+        # blank_sbfile = dot_in_dir +'/' +  'LV1_SLURM_BLANK.sb'
+        blank_sbfile = dot_in_dir +'/' +  'LV1_BLANK.sh'
     
     print('for this LV1 simulation')
     print('the grid file used is:')
@@ -160,7 +162,6 @@ def  make_LV1_dotin_and_SLURM( pkl_fnm , mod_type ):
             else:
                 line2 = line
         f2.write(line2)
-
     f.close()
     f2.close()
 
@@ -175,11 +176,8 @@ def  make_LV1_dotin_and_SLURM( pkl_fnm , mod_type ):
             else:
                 line2 = line
         f2.write(line2)
-
     f.close()
     f2.close()
-
-
 
 
 def run_slurm_LV1( pkl_fnm , mod_type):
@@ -193,8 +191,11 @@ def run_slurm_LV1( pkl_fnm , mod_type):
     cwd = os.getcwd()
     os.chdir(PFM['lv1_run_dir'])
     print('run_slurm_LV1: current directory is now: ', os.getcwd() )
-    
-    cmd_list = ['sbatch', '--wait' ,'LV1_SLURM.sb']
+    # cmd_list = ['sbatch', '--wait' ,'LV1_SLURM.sb']
+    # proc = subprocess.run(cmd_list, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    print('!!No slurm on esturaries!!: use bash shell script instead')
+    cmd_list = ['bash','LV1_BLANK.sh'] #
+    print(cmd_list)
     proc = subprocess.run(cmd_list, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     print(proc)
     print('subprocess slurm ran correctly? ' + str(proc.returncode) + ' (0=yes)')
@@ -311,7 +312,8 @@ def  make_LV2_dotin_and_SLURM( pkl_fnm , mod_type ):
 
     lv2_infile_local       = 'LV2_forecast_run.in'
     lv2_logfile_local      = 'LV2_forecast.log'
-    lv2_sbfile_local       = 'LV2_SLURM.sb'
+    # lv2_sbfile_local       = 'LV2_SLURM.sb'
+    lv2_sbfile_local       = 'LV2_BLANK.sh'
     D['lv2_infile_local']  = lv2_infile_local
     D['lv2_logfile_local'] = lv2_logfile_local
 
@@ -336,7 +338,7 @@ def  make_LV2_dotin_and_SLURM( pkl_fnm , mod_type ):
     if "INTEL" in D['lv2_executable']:
         blank_sbfile = dot_in_dir +'/' +  'LV2_SLURM_intel_BLANK.sb'
     else:        
-        blank_sbfile = dot_in_dir +'/' +  'LV2_SLURM_BLANK.sb'
+        blank_sbfile = dot_in_dir +'/' +  'LV2_BLANK.sh'
 
     lv2_infile   = D['lv2_run_dir'] + '/' + lv2_infile_local
     lv2_sbfile   = D['lv2_run_dir'] + '/' + lv2_sbfile_local
@@ -384,8 +386,9 @@ def run_slurm_LV2( pkl_fnm , mod_type ):
     cwd = os.getcwd()
     os.chdir(PFM['lv2_run_dir'])
     print('run_slurm_LV2: current directory is now: ', os.getcwd() )
-    
-    cmd_list = ['sbatch', '--wait' ,'LV2_SLURM.sb']
+    print('No slurm: bash shell script instead')
+    cmd_list = ['bash','LV2_BLANK.sh'] #put name of the file from 
+    # cmd_list = ['sbatch', '--wait' ,'LV2_SLURM.sb']
     print('run_slurm_LV2: run command: ', cmd_list )
     proc = subprocess.run(cmd_list, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     #proc = subprocess.run("/cm/shared/apps/slurm/current/bin/sbatch  --wait LV1_SLURM.sb")
@@ -496,7 +499,8 @@ def  make_LV3_dotin_and_SLURM( pkl_fnm , mod_type ):
 
     lv3_infile_local       = 'LV3_forecast_run.in'
     lv3_logfile_local      = 'LV3_forecast.log'
-    lv3_sbfile_local       = 'LV3_SLURM.sb'
+    # lv3_sbfile_local       = 'LV3_SLURM.sb'
+    lv3_sbfile_local       = 'LV3_BLANK.sh'
     D['lv3_infile_local']  = lv3_infile_local
     D['lv3_logfile_local'] = lv3_logfile_local
 
@@ -519,7 +523,8 @@ def  make_LV3_dotin_and_SLURM( pkl_fnm , mod_type ):
     if "INTEL" in D['lv3_executable']:
         blank_sbfile = dot_in_dir +'/' +  'LV3_SLURM_intel_BLANK.sb'
     else:        
-        blank_sbfile = dot_in_dir +'/' +  'LV3_SLURM_BLANK.sb'
+        # blank_sbfile = dot_in_dir +'/' +  'LV3_SLURM_BLANK.sb'
+        blank_sbfile = dot_in_dir +'/' +  'LV3_BLANK.sh'
     
     lv3_infile   = D['lv3_run_dir'] + '/' + lv3_infile_local
     lv3_sbfile   = D['lv3_run_dir'] + '/' + lv3_sbfile_local
@@ -568,8 +573,9 @@ def run_slurm_LV3( pkl_fnm , mod_type ):
     cwd = os.getcwd()
     os.chdir(PFM['lv3_run_dir'])
     print('run_slurm_LV3: current directory is now: ', os.getcwd() )
-    
-    cmd_list = ['sbatch', '--wait' ,'LV3_SLURM.sb']
+    print('No slurm, ushing bash')
+    cmd_list = ['bash','LV3_BLANK.sh'] #put name of the file from 
+    # cmd_list = ['sbatch', '--wait' ,'LV3_SLURM.sb']
     print('run_slurm_LV3: run command: ', cmd_list )
     proc = subprocess.run(cmd_list, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     #proc = subprocess.run("/cm/shared/apps/slurm/current/bin/sbatch  --wait LV1_SLURM.sb")

@@ -68,7 +68,6 @@ def get_hindcast_days(t1,tend,dt):
 
     return t1s, t2s
 
-
 def initialize_model(input_py_full,modinfo_pkl_full):
     # this makes the pickle file from the model_input_dictionary
     # first return the dictionary of model info
@@ -88,7 +87,6 @@ def initialize_model(input_py_full,modinfo_pkl_full):
         pickle.dump(MINFO,fout, protocol=pickle.HIGHEST_PROTOCOL)
         print('The model_info dictionary is saved to ' + modinfo_pkl_full)
         print('This file dictates how the model is run, where files are saved, etc.\n')
-
 
 def get_model_info(pkl_fnm):
     # this returns the model information stored in pkl_fnm

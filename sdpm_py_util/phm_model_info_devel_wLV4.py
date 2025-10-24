@@ -89,6 +89,7 @@ def create_model_info_dict():
         PFM['qtj_obs_fname_full'] = '/dataSIO/PHM_Simulations/raw_download/qtj_obs_data/qtj_raw_20200101_20250901.csv'
         PFM['pb_time_switch'] = datetime(2025,4,1)
         PFM['nwm_dir'] = '/dataSIO/PHM_Simulations/raw_download/nwm_files/'
+        PFM['server'] = 'estuaries'
     else:
         # hycom_new is the only forecast option
         ocn_model = 'hycom_new' # worked with 'hycom' but that is now (9/13/24) depricated      
@@ -245,22 +246,22 @@ def create_model_info_dict():
     NN=dict() 
     NN['L1','Lm']  = 251     # Lm in input file
     NN['L1','Mm']  = 388     # Mm in input file
-    NN['L1','ntilei'] = 9    # 6 number of tiles in I-direction
-    NN['L1','ntilej'] = 24   # 18 number of tiles in J-direction
+    NN['L1','ntilei'] = 3    # 6 number of tiles in I-direction
+    NN['L1','ntilej'] = 6   # 18 number of tiles in J-direction
     NN['L1','np'] = NN['L1','ntilei'] * NN['L1','ntilej'] # total number of processors
     NN['L1','nnodes'] =  int( NN['L1','np'] / 36 )  # 3 number of nodes to be used.  not for .in file but for slurm!
 
     NN['L2','Lm']  = 264     # Lm in input file
     NN['L2','Mm']  = 396     # Mm in input file
-    NN['L2','ntilei'] = 9    # 6 number of tiles in I-direction
-    NN['L2','ntilej'] = 24   # 18 number of tiles in J-direction
+    NN['L2','ntilei'] = 4    # 6 number of tiles in I-direction
+    NN['L2','ntilej'] = 6   # 18 number of tiles in J-direction
     NN['L2','np'] = NN['L2','ntilei'] * NN['L2','ntilej'] # total number of processors
     NN['L2','nnodes'] = int( NN['L2','np'] / 36 )  # 3 number of nodes to be used.  not for .in file but for slurm!
 
     NN['L3','Lm']  = 249     # Lm in input file
     NN['L3','Mm']  = 411     # Mm in input file
-    NN['L3','ntilei'] = 12    # 6 number of tiles in I-direction
-    NN['L3','ntilej'] = 30    # 18 number of tiles in J-direction
+    NN['L3','ntilei'] = 3    # 6 number of tiles in I-direction
+    NN['L3','ntilej'] = 7    # 18 number of tiles in J-direction
     NN['L3','np'] = NN['L3','ntilei'] * NN['L3','ntilej'] # total number of processors
     NN['L3','nnodes'] = int( NN['L3','np'] / 36  )  # 3 number of nodes to be used.  not for .infile but for slurm!
     
@@ -377,8 +378,8 @@ def create_model_info_dict():
     PFM['lv1_bc_file']             = 'LV1_OCEAN_BC.nc'   
     
     PFM['lv1_executable']          = 'romsM_notides.bin'
-    PFM['lv2_executable']          = 'LV1_oceanM'
-    PFM['lv3_executable']          = 'LV1_oceanM'
+    PFM['lv2_executable']          = 'romsM_notides.bin'
+    PFM['lv3_executable']          = 'romsM_notides.bin'
     # PFM['lv1_executable']          = 'LV3_romsM_INTEL'
     # PFM['lv2_executable']          = 'LV3_romsM_INTEL'
     # PFM['lv3_executable']          = 'LV3_romsM_INTEL'
